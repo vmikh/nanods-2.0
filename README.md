@@ -35,8 +35,8 @@ or `@import "nanods/nanods.css"` from a bundler (fonts resolve relative to `css/
 |---|---|---|
 | `--c-bg` | #0A0B0E | page canvas |
 | `--c-island` | #171A21 | islands, modals |
-| `--c-surface` | #1F232C | menus, cards on islands |
-| `--c-surface-2` | #232830 | secondary buttons, inputs, chips |
+| `--c-surface` | #1F232C | menus, popovers |
+| `--c-surface-2` | #232830 | cards on islands, inputs, secondary buttons, chips |
 | `--c-fg` / `-2` / `-3` / `-4` | #F2F4F7 / #A0A7B4 / #8A92A0 / #6B7280 | text levels |
 | `--c-accent` | #D2FF3A | the one accent: primary button, links |
 | `--c-light` | #F2F4F7 | selected segment |
