@@ -19,7 +19,7 @@ or `@import "nanods/nanods.css"` from a bundler (fonts resolve relative to `css/
 | component | classes |
 |---|---|
 | Button | `.btn` (secondary, default) · `.btn-primary` · `.btn-link` (inline text link) · sizes `.btn-sm` 28 / default 36 / `.btn-lg` 40 · `.btn-block` |
-| Segmented | `.seg > button.on` · `.seg-ghost` |
+| Segmented | `.seg > button.on` (same height, radius and type as `.btn`; selected item touches the edges) · `.seg-sm` · `.seg-ghost` |
 | Input / Select / Textarea | `.input` · `.select` · `.textarea` · `-sm` sizes · `.field > .label > .hint` · `.check` · `.range` |
 | Chip / Badge / Kbd | `.chip` (`.on`, `.chip-accent`) · `.badge` (`-ok -danger -accent`) · `.kbd` |
 | List row | `.list > .list-row` (`.on`, `.title`, `.meta`) |
