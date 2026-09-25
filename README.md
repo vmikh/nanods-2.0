@@ -1,6 +1,6 @@
 # nanods 2.0
 
-A dark island UI: the page is a canvas, content lives in rounded **islands**, no outlines, hierarchy by surface tone, one accent, Onest typeface, 4 px grid. Plain CSS, no build step.
+A dark island UI: the page is a canvas, content lives in rounded **islands**, no outlines, hierarchy by surface tone, one accent, Onest typeface, 4 px grid, 14 px UI text. Plain CSS, no build step.
 
 ```html
 <link rel="stylesheet" href="nanods.css">
@@ -49,4 +49,4 @@ The system ships no icons. Use **Lucide** (`lucide.dev`, ISC): 24 px grid, 1.5�
 - Surfaces, not borders. Islands on the canvas, `--c-surface-2` controls on islands, `--c-surface` popovers above.
 - Press feedback is `transform: scale(.97)`; hover is one tone lighter.
 - Radii: controls 10 px, cards 14 px, islands 24 px, pills full.
-- Text: 13 px UI default, 12 px meta, 11 px captions, 14–15 px reading.
+- Text: 14 px UI default, 13 px meta, 12 px captions, 15–16 px reading.
