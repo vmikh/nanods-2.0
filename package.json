@@ -4,6 +4,6 @@
   "description": "nanods 2.0 — dark, borderless island UI: tokens, type, palette, base components. Plain CSS, no build.",
   "license": "MIT",
   "style": "nanods.css",
-  "exports": { ".": "./nanods.css", "./css/*": "./css/*", "./fonts/*": "./fonts/*", "./icons/*": "./icons/*" },
-  "files": ["nanods.css", "css", "fonts", "icons", "README.md"]
+  "exports": { ".": "./nanods.css", "./css/*": "./css/*", "./fonts/*": "./fonts/*" },
+  "files": ["nanods.css", "css", "fonts", "README.md"]
 }

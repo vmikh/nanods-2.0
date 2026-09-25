@@ -1,6 +1,6 @@
 # nanods 2.0
 
-Design system extracted from the Studio design: a dark canvas, content in rounded **islands**, no outlines, hierarchy by surface tone, one lime accent, Onest typeface, 4 px grid. Plain CSS, no build step.
+A dark island UI: the page is a canvas, content lives in rounded **islands**, no outlines, hierarchy by surface tone, one accent, Onest typeface, 4 px grid. Plain CSS, no build step.
 
 ```html
 <link rel="stylesheet" href="nanods.css">
@@ -8,13 +8,27 @@ Design system extracted from the Studio design: a dark canvas, content in rounde
 or `@import "nanods/nanods.css"` from a bundler (fonts resolve relative to `css/fonts.css`).
 
 ## Files
-- `css/tokens.css` — spacing `--mp-*` (4 px grid), radii `--rd-*` (island = 24 px), motion `--dur-*` / `--ease`, palette `--c-*`, type scale `--fs-*`, control heights.
+- `css/tokens.css` — spacing `--mp-*` (4 px grid), radii `--rd-*` (island = 24 px), motion `--dur-*` / `--ease`, palette `--c-*`, type scale `--fs-*`, control heights, `--island-pad`.
 - `css/fonts.css` + `fonts/` — Onest variable 500–700, split by script.
 - `css/base.css` — reset, body, focus ring, typography classes `.t-h1 … .t-label`, colour utilities.
-- `css/layout.css` — `.shell` (page = islands with 8 px gutters), `.island`, `.card`, `.stack` / `.cluster` / `.row` / `.grid-*`.
-- `css/components.css` — `.btn` (+ `-primary -light -ghost -soft -glass -link -dashed`, sizes `-sm -lg`, `-icon -round -block`), `.seg` segmented control, `.input` / `.select` / `.textarea` / `.field` / `.check`, `.chip` / `.badge` / `.kbd`, `.list-row`, `.menu`, `.scrim` + `.modal`, `.glassbar`, `.meter`, `.icon`.
-- `icons/nanods-icons.svg` — sprite of the Studio icons; inline it once and use `<svg class="icon"><use href="#i-play"/></svg>`.
-- `demo/index.html` — everything on one page.
+- `css/layout.css` — `.shell` (islands with 8 px gutters), `.island` + `.island-pad`, `.card`, `.stack` / `.cluster` / `.row` / `.grid-*`.
+- `css/components.css` — Button, Segmented, Input / Select / Textarea / Field / Check, Chip / Badge / Kbd, List row, Menu, Scrim + Modal, Meter.
+- `demo/index.html` — everything on one page. `scripts/shot.mjs` screenshots a URL with headless Chrome.
+
+## Components
+| component | classes |
+|---|---|
+| Button | `.btn` (secondary, default) · `.btn-primary` · sizes `.btn-sm` 28 / default 36 / `.btn-lg` 40 · `.btn-block` |
+| Segmented | `.seg > button.on` · `.seg-ghost` |
+| Input / Select / Textarea | `.input` · `.select` · `.textarea` · `-sm` sizes · `.field > .label > .hint` · `.check` · `.range` |
+| Chip / Badge / Kbd | `.chip` (`.on`, `.chip-accent`) · `.badge` (`-ok -danger -accent`) · `.kbd` |
+| List row | `.list > .list-row` (`.on`, `.title`, `.meta`) |
+| Menu | `.menu > .menu-head / .menu-item / .menu-sep` |
+| Modal | `.scrim > .modal > .modal-head` |
+| Meter | `.meter > i` (`.meter-ok`, `.meter-fg`) |
+
+## Islands
+`.island` is the content container (background `--c-island`, radius 24). Inner padding is adaptive through `--island-pad`: **16 px** on small screens, **20 px** from 900 px, **24 px** from 1440 px. Use `.island-pad` for the adaptive value or `.island-pad-s / -m / -l` to pin one.
 
 ## Palette
 | token | value | use |
@@ -22,11 +36,14 @@ or `@import "nanods/nanods.css"` from a bundler (fonts resolve relative to `css/
 | `--c-bg` | #0A0B0E | page canvas |
 | `--c-island` | #171A21 | islands, modals |
 | `--c-surface` | #1F232C | menus, cards on islands |
-| `--c-surface-2` | #232830 | soft buttons, inputs, chips |
+| `--c-surface-2` | #232830 | secondary buttons, inputs, chips |
 | `--c-fg` / `-2` / `-3` / `-4` | #F2F4F7 / #A0A7B4 / #8A92A0 / #6B7280 | text levels |
-| `--c-accent` | #D2FF3A | the one accent, links, primary |
-| `--c-light` | #F2F4F7 | inverted (light) buttons, selected segment |
-| `--c-danger` | #FF8A9B | destructive hover |
+| `--c-accent` | #D2FF3A | the one accent: primary button, links |
+| `--c-light` | #F2F4F7 | selected segment |
+| `--c-danger` | #FF8A9B | destructive states |
+
+## Icons
+The system ships no icons. Use **Lucide** (`lucide.dev`, ISC): 24 px grid, 1.5–2 px stroke, `currentColor`; render at 16 px inside controls and 14 px in meta text, coloured `--c-fg-3` at rest and inheriting on hover.
 
 ## Rules of thumb
 - Surfaces, not borders. Islands on the canvas, `--c-surface-2` controls on islands, `--c-surface` popovers above.
