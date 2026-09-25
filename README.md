@@ -1,57 +1,41 @@
 # nanods 2.0
 
-A dark island UI: the page is a canvas, content lives in rounded **islands**, no outlines, hierarchy by surface tone, one accent, Onest typeface, 4 px grid, 14 px UI text. Plain CSS, no build step.
+A design system written as documentation for AI. Give these files to a model before it builds any interface; they are the source of truth. Every value is in [tokens.md](tokens.md), every rule is in the file for its topic.
 
-```html
-<link rel="stylesheet" href="nanods.css">
-```
-or `@import "nanods/nanods.css"` from a bundler (fonts resolve relative to `css/fonts.css`).
+The look: a dark canvas, content in rounded **islands**, no outlines, hierarchy by surface tone, one lime accent, Onest typeface, 4 px grid, 14 px UI text.
 
 ## Files
-- `css/tokens.css` — spacing `--mp-*` (4 px grid), radii `--rd-*` (island = 24 px), motion `--dur-*` / `--ease`, palette `--c-*`, type scale `--fs-*`, control heights, `--island-pad`.
-- `css/fonts.css` + `fonts/` — Onest variable 500–700, split by script.
-- `css/base.css` — reset, body, focus ring, typography classes `.t-h1 … .t-label`, colour utilities.
-- `css/layout.css` — `.shell` (islands with 8 px gutters), `.island` + `.island-pad`, `.card` (+ `.card-head > .card-title / .card-sub`), `.stack` / `.cluster` / `.row` / `.grid-*`.
-- `css/components.css` — Button, Segmented, Input / Select / Textarea / Field / Check, Chip / Badge / Kbd, List row, Menu, Scrim + Modal, Meter.
-- `demo/index.html` — everything on one page. `scripts/shot.mjs` screenshots a URL with headless Chrome.
+Read them in this order.
 
-## Components
-| component | classes |
+| file | what it covers |
 |---|---|
-| Button | `.btn` (secondary, default) · `.btn-primary` · `.btn-link` (inline text link) · sizes `.btn-sm` 28 / default 36 / `.btn-lg` 40 · `.btn-block` |
-| Segmented | `.seg > button.on` (same height, radius and type as `.btn`; selected item touches the edges) · `.seg-sm` · `.seg-ghost` |
-| Input / Select / Textarea | `.input` · `.select` · `.textarea` · `-sm` sizes · `.field > .label > .hint` · `.check` · `.range` |
-| Chip / Badge / Kbd | `.chip` (`.on`, `.chip-accent`) · `.badge` (`-ok -danger -accent`) · `.kbd` |
-| List row | `.list > .list-row` (`.on`, `.title`, `.meta`) |
-| Menu | `.menu > .menu-head / .menu-item / .menu-sep` |
-| Modal | `.scrim > .modal > .modal-head` |
-| Meter | `.meter > i` (`.meter-ok`, `.meter-fg`) |
+| [tokens.md](tokens.md) | the complete `:root` block and base layer. Paste it first, use only these variables |
+| [palette.md](palette.md) | colour roles, surface layering, accent and status rules |
+| [typography.md](typography.md) | Onest, type scale, text classes, weights |
+| [grid.md](grid.md) | 4 px grid, spacing scale, fixed sizes, breakpoints |
+| [layout.md](layout.md) | shell, islands, cards, flow utilities, page recipes |
+| [components.md](components.md) | button, segmented, inputs, field, chip, badge, kbd, list, menu, modal, meter |
+| [motion.md](motion.md) | states (hover, press, focus, selected, disabled) and timing |
+| [icons.md](icons.md) | Phosphor Fill, sizes, colour |
+| [text.md](text.md) | editorial policy: case, dashes, non-breaking spaces |
 
-## Islands
-`.island` is the content container (background `--c-island`, radius 24). Inner padding is adaptive through `--island-pad`: **16 px** on small screens, **20 px** from 900 px, **24 px** from 1440 px. Use `.island-pad` for the adaptive value or `.island-pad-s / -m / -l` to pin one.
+## Core principles
+1. **Canvas and islands.** The page background is `--c-bg`. All content lives in islands (`--c-island`, radius 24) separated by 8 px gutters. Nothing sits directly on the canvas.
+2. **Surfaces, not borders.** Never outline a card, input or button. Hierarchy comes from surface tone: canvas, island, surface, surface-2. The only lines allowed are 1 px `--c-line` dividers and the focus ring.
+3. **One accent.** Lime `--c-accent` points at the main thing: the primary button, links, focus, progress. One primary button per view or modal. Never use the accent for decoration, backgrounds or large fills.
+4. **Tokens only.** No raw hex, px or ms in component code. If a value is missing from [tokens.md](tokens.md), the design is wrong, not the token list.
+5. **4 px grid.** Every spacing and size is a multiple of 4, halves (2, 6, 10, 14) only for tight insides of controls.
+6. **Quiet type.** Onest at 500 by default, 600 for headings and emphasis. 14 px is the UI size; 15 to 16 px only for reading text.
+7. **No uppercase, no long dashes.** Sentence case everywhere. See [text.md](text.md).
+8. **Flat.** No shadows except on popovers (`--shadow-pop`), no gradients except the scroll fade on islands.
 
-## Palette
-| token | value | use |
-|---|---|---|
-| `--c-bg` | #0A0B0E | page canvas |
-| `--c-island` | #171A21 | islands, modals |
-| `--c-surface` | #1F232C | menus, popovers |
-| `--c-surface-2` | #232830 | cards on islands, inputs, secondary buttons, chips |
-| `--c-fg` / `-2` / `-3` / `-4` | #F2F4F7 / #A0A7B4 / #8A92A0 / #6B7280 | text levels |
-| `--c-accent` | #D2FF3A | the one accent: primary button, links |
-| `--c-light` | #F2F4F7 | selected segment |
-| `--c-danger` | #FF8A9B | destructive states |
-
-## Icons
-The system ships no icons. Use **Lucide** (`lucide.dev`, ISC): 24 px grid, 1.5–2 px stroke, `currentColor`; render at 16 px inside controls and 14 px in meta text, coloured `--c-fg-3` at rest and inheriting on hover.
-
-## Text rules
-- No uppercase. Section labels (`.t-label`) are small, muted and sentence case; headings, buttons and body text likewise. Capitals only where a name or an abbreviation requires them.
-- No long dashes in copy. Use a comma, a colon or a new sentence instead; a short hyphen only inside words.
-- In Russian, a non-breaking space between a preposition and the word after it (`в проекте`, `на странице`, `с нуля`), so a preposition never ends a line.
-
-## Rules of thumb
-- Surfaces, not borders. Islands on the canvas, `--c-surface-2` controls on islands, `--c-surface` popovers above.
-- Press feedback is `transform: scale(.97)`; hover is one tone lighter.
-- Radii: controls 10 px, cards 14 px, islands 24 px, pills full.
-- Text: 14 px UI default, 13 px meta, 12 px captions, 15–16 px reading.
+## Checklist before you ship
+- [ ] Page background is `--c-bg`, content is inside `.island` blocks, gutters are 8 px.
+- [ ] No `border` on anything except `.divider` / `.menu-sep`. No outlines except `:focus-visible`.
+- [ ] At most one `.btn-primary` per view. Accent appears only on primary actions, links, focus, progress, selected accents.
+- [ ] Every colour, size, radius and duration is a `var(--…)` from [tokens.md](tokens.md).
+- [ ] All spacing is on the 4 px grid; controls are 28, 36 or 40 px high; rows are 44.
+- [ ] Font is Onest, weight 500 or 600 (700 only for rare display numbers). No weight 400.
+- [ ] No uppercase text, no `text-transform`, no em dashes in copy, non-breaking spaces after Russian prepositions.
+- [ ] Icons are Phosphor, Fill weight only, 16 px in controls, 14 px in meta, `currentColor`.
+- [ ] Hover is one tone lighter, press is `scale(.97)`, focus is the lime ring.
