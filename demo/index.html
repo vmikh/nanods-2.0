@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nanods 2.0 · demo</title>
+<link rel="stylesheet" href="../nanods.css">
+<style>
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--mp-2); }
+  .sw { height: 56px; border-radius: var(--rd-2); display: flex; align-items: flex-end; padding: var(--mp-15); font-size: var(--fs-sm); color: var(--c-fg-2); font-family: var(--font-mono); }
+  .demo-block { display: flex; flex-direction: column; gap: var(--mp-3); }
+  .demo-title { margin-bottom: var(--mp-2); }
+</style>
+</head>
+<body>
+<div id="icons"></div>
+<div class="shell">
+  <aside class="island shell-side" style="padding: var(--mp-3)">
+    <div class="row" style="padding: var(--mp-2) var(--mp-25)"><span class="t-h3">nanods</span><span class="badge badge-accent">2.0</span><span class="spacer"></span><button class="btn btn-ghost btn-icon btn-sm"><svg class="icon"><use href="#i-panel"/></svg></button></div>
+    <div class="list">
+      <button class="list-row on"><svg class="icon"><use href="#i-grid"/></svg><span class="title">Tokens</span></button>
+      <button class="list-row"><svg class="icon"><use href="#i-sliders"/></svg><span class="title">Components</span><span class="meta">12</span></button>
+      <button class="list-row"><svg class="icon"><use href="#i-image"/></svg><span class="title">Layout</span></button>
+      <button class="list-row"><span class="thumb"></span><span class="title">A very long entry title that truncates</span></button>
+    </div>
+    <div class="spacer"></div>
+    <hr class="divider">
+    <div class="row" style="padding: 0 var(--mp-25)"><span class="t-meta"><span class="c-accent">⚡</span> 668 credits · <button class="btn btn-link">Top up</button></span></div>
+  </aside>
+  <main class="shell-main">
+    <section class="island island-pad demo-block" style="overflow:auto">
+      <h1 class="t-h1 demo-title">Design system</h1>
+      <p class="t-body c-fg-2" style="max-width: 62ch">Dark canvas, content in rounded islands, no outlines. Hierarchy comes from surface tone; one lime accent does the pointing. Onest, 4 px grid, 13 px UI text.</p>
+
+      <h2 class="t-label" style="margin-top: var(--mp-4)">Palette</h2>
+      <div class="swatches">
+        <div class="sw" style="background: var(--c-bg); box-shadow: inset 0 0 0 1px var(--c-line)">bg</div>
+        <div class="sw" style="background: var(--c-island); box-shadow: inset 0 0 0 1px var(--c-line)">island</div>
+        <div class="sw" style="background: var(--c-surface)">surface</div>
+        <div class="sw" style="background: var(--c-surface-2)">surface-2</div>
+        <div class="sw" style="background: var(--c-surface-3)">surface-3</div>
+        <div class="sw" style="background: var(--c-accent); color: var(--c-on-light)">accent</div>
+        <div class="sw" style="background: var(--c-light); color: var(--c-on-light)">light</div>
+        <div class="sw" style="background: var(--c-danger); color: var(--c-on-light)">danger</div>
+        <div class="sw" style="background: var(--c-fg); color: var(--c-on-light)">fg</div>
+        <div class="sw" style="background: var(--c-fg-2); color: var(--c-on-light)">fg-2</div>
+        <div class="sw" style="background: var(--c-fg-3); color: var(--c-on-light)">fg-3</div>
+        <div class="sw" style="background: var(--c-fg-4)">fg-4</div>
+      </div>
+
+      <h2 class="t-label" style="margin-top: var(--mp-4)">Type</h2>
+      <div class="stack-1 stack"><div class="t-h1">Heading one 28</div><div class="t-h2">Heading two 22</div><div class="t-h3">Heading three 18</div><div class="t-lg">Reading text 15 / 22</div><div class="t-body">Body 14 / 1.5 — Мухи · Теория игр, кириллица тоже Onest</div><div class="t-ui">UI 13 · default</div><div class="t-meta">Meta 12 · secondary</div><div class="t-caption">Caption 11 · muted</div><div class="t-label">Label 11 · uppercase</div><div class="t-mono">mono 12 · 00:12 / 01:24</div></div>
+
+      <h2 class="t-label" style="margin-top: var(--mp-4)">Buttons</h2>
+      <div class="cluster">
+        <button class="btn btn-primary"><svg class="icon"><use href="#i-sparkles"/></svg>Generate</button>
+        <button class="btn btn-light">Light</button>
+        <button class="btn">Default</button>
+        <button class="btn btn-soft"><svg class="icon"><use href="#i-sliders"/></svg>Soft</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn btn-glass">Glass</button>
+        <button class="btn btn-dashed"><svg class="icon"><use href="#i-plus"/></svg>Dashed</button>
+        <button class="btn btn-link">Link</button>
+        <button class="btn" disabled>Disabled</button>
+      </div>
+      <div class="cluster">
+        <button class="btn btn-lg btn-primary">Large 40</button><button class="btn">Medium 36</button><button class="btn btn-sm">Small 28</button>
+        <button class="btn btn-light btn-icon btn-round"><svg class="icon"><use href="#i-play"/></svg></button>
+        <button class="btn btn-icon"><svg class="icon"><use href="#i-gear"/></svg></button>
+        <button class="btn btn-ghost btn-icon btn-sm"><svg class="icon"><use href="#i-x"/></svg></button>
+        <button class="btn btn-ghost btn-icon btn-sm btn-danger"><svg class="icon"><use href="#i-trash"/></svg></button>
+      </div>
+
+      <h2 class="t-label" style="margin-top: var(--mp-4)">Segmented · chips · badges</h2>
+      <div class="cluster">
+        <div class="seg"><button class="on">1×</button><button>2×</button><button>5×</button><button>10×</button><button>20×</button></div>
+        <div class="seg"><button class="on">EN</button><button>RU</button></div>
+        <div class="seg seg-ghost"><button class="on">Tokens</button><button>Components</button></div>
+        <span class="chip">chip</span><span class="chip on">selected</span><span class="chip chip-accent">accent</span>
+        <span class="badge">BADGE</span><span class="badge badge-ok">OK</span><span class="badge badge-danger">OUT</span><span class="badge badge-accent">NEW</span>
+        <span class="kbd">Esc</span>
+      </div>
+
+      <h2 class="t-label" style="margin-top: var(--mp-4)">Fields</h2>
+      <div class="grid-2">
+        <div>
+          <div class="field"><label class="label">Gossip<span class="hint">how much a fly learns from games it only watches</span></label><input class="input" type="number" value="0.1" step="0.05"></div>
+          <div class="field"><label class="label">Payoffs<span class="hint">temptation / reward / punishment / sucker</span></label><select class="select"><option>classic 5 / 3 / 1 / 0</option><option>generous 5 / 4 / 1 / 0</option></select></div>
+          <div class="field"><label class="label">F1</label><select class="select select-sm"><option>normal</option><option>no PPL1</option></select></div>
+          <div class="field"><label class="label">Seed</label><span class="row"><input class="input input-sm" style="width: 6em" value="1"><label class="check"><input type="checkbox" checked> new each restart</label></span></div>
+        </div>
+        <div class="stack">
+          <textarea class="textarea" placeholder="Describe the scene…"></textarea>
+          <div class="card stack"><div class="t-ui">Card on island</div><div class="t-meta">surface · radius 14</div><div class="meter"><i style="width: 62%"></i></div><div class="meter meter-ok"><i style="width: 38%"></i></div></div>
+        </div>
+      </div>
+
+      <h2 class="t-label" style="margin-top: var(--mp-4)">Menu · glass bar</h2>
+      <div class="row" style="align-items: flex-start; gap: var(--mp-6)">
+        <div class="menu" style="position: static"><div class="menu-head">668 credits · <button class="btn btn-link">Top up</button></div><button class="menu-item"><svg class="icon"><use href="#i-user"/></svg>Profile</button><button class="menu-item"><svg class="icon"><use href="#i-gear"/></svg>Settings</button><hr class="menu-sep"><button class="menu-item"><svg class="icon"><use href="#i-logout"/></svg>Log out</button></div>
+        <div class="glassbar" style="width: 420px"><button class="btn btn-light btn-icon btn-round"><svg class="icon icon-lg"><use href="#i-play"/></svg></button><span>00:12 / 01:24</span><span class="spacer"></span><button class="btn btn-ghost btn-icon btn-sm"><svg class="icon"><use href="#i-vol"/></svg></button><button class="btn btn-ghost btn-icon btn-sm"><svg class="icon"><use href="#i-max"/></svg></button></div>
+      </div>
+    </section>
+  </main>
+</div>
+<script>fetch('../icons/nanods-icons.svg').then(r => r.text()).then(t => (document.getElementById('icons').innerHTML = t));</script>
+</body>
+</html>
