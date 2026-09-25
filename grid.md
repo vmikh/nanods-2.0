@@ -1,75 +1,78 @@
 # Grid
 
-Base unit **4 px**. Every margin, padding, gap and size is a multiple of 4. Halves (2, 6, 10, 14) are allowed only for the tight insides of controls: chip gap, badge padding, small control padding.
+The first level of the system. One base unit, **4 px**, and every size on the page is a step of it.
 
-## Spacing scale
-| token | px | typical use |
+## Theory
+
+### Step 4 px
+Every dimension is a multiple of 4: padding, margin, gap, width, height, radius, offset, icon size, breakpoint. The grid is not only for spacing; it governs **all sizes on the page**. A value that is not on the grid does not exist: no 15, 18, 22, 30, 50. If a layout seems to need one, round it to the nearest step.
+
+### Small steps can be split
+Below 16 px the eye notices every pixel, so halves are allowed: 2, 6, 10, 14. They are for the insides of small things: the gap in a chip, the padding of a badge, a fine radius.
+
+### Large steps get larger
+The bigger the value, the bigger the step. Nobody sees the difference between 52 and 56 between two sections, but random values make a layout feel accidental. So the scale thins out as it grows:
+
+| range | step | values |
 |---|---|---|
-| `--mp-05` | 2 | gap between list rows, between card title and subtitle |
-| `--mp-1` | 4 | tight stacks (`.stack-1`), gap between ghost segments |
-| `--mp-15` | 6 | menu padding, chip icon gap, badge and kbd side padding, field vertical padding |
-| `--mp-2` | 8 | **default gap**: stacks, clusters, rows, button icon gap, gutter between islands |
-| `--mp-25` | 10 | side padding of small controls, list rows, menu items |
-| `--mp-3` | 12 | side padding of controls, gap between blocks in a section, card head to content, divider margin |
-| `--mp-35` | 14 | rarely, inside controls |
-| `--mp-4` | 16 | card padding, island padding on small screens, large button side padding, space above a section label |
-| `--mp-5` | 20 | island padding on medium screens |
-| `--mp-6` | 24 | island padding on large screens, scrim padding, gap between side by side blocks |
-| `--mp-8` | 32 | select right padding (room for the arrow), spacing between large page sections |
-| `--mp-10` … `--mp-20` | 40 to 80 | empty states, landing style vertical rhythm |
+| 2 to 16 | 2 | 2, 4, 6, 8, 10, 12, 14, 16 |
+| 16 to 48 | 4 | 20, 24, 28, 32, 36, 40, 44, 48 |
+| 48 to 64 | 8 | 56, 64 |
+| 64 and up | 16 or 32 | 80, 96, 128 |
 
-### Choosing a gap
-- Things that belong together: 2 to 4.
-- Items in a group (buttons, fields, rows): 8.
-- Blocks inside a section: 12.
-- Sections inside an island: 16 above the section label, 12 between label and content.
-- Island edge to content: `--island-pad` (16 / 20 / 24), never less.
-- Between islands: `--gutter` (8), always.
+Fixed widths of large blocks (sidebar 340, menu 232, modal 720) are also multiples of 4.
 
-Inner spacing is always smaller than outer spacing: the gap inside a group is less than the gap between groups.
+### Inner space is smaller than outer space
+Spacing shows what belongs together. The gap inside a group is always smaller than the gap between groups.
 
-## Fixed sizes
-| element | size |
+| relation | gap |
 |---|---|
-| small control (`.btn-sm`, `.input-sm`, `.seg-sm`) | 28 high |
-| control (`.btn`, `.input`, `.select`, `.seg`, `.menu-item`) | 36 high |
-| large control (`.btn-lg`) | 40 high |
-| list row | 44 high |
-| chip | 24 high |
-| badge, kbd | 20 high |
-| meter | 8 high |
-| checkbox | 14 × 14 |
-| icon | 16 in controls, 14 in meta text |
-| segment | at least 40 wide |
-| field control | 160 wide |
-| textarea | at least 72 high |
-| menu | 232 wide |
-| sidebar island | 340 wide |
-| modal | `min(720px, 100%)` wide |
+| parts of one thing (title and subtitle, rows in a list) | 2 to 4 |
+| items in a group (buttons, fields, chips) | 8 |
+| blocks inside a section | 12 |
+| sections inside an island | 16 above the section label, 12 below it |
+| island edge to content | 16, 20 or 24 (`--island-pad`) |
+| between islands | 8 (`--gutter`) |
 
-Controls side by side share a height. Never mix 28 and 36 in one row.
+### The only exceptions
+- Border widths: 1 px hairlines, 2 px focus ring.
+- Font sizes and line heights (see [typography.md](typography.md)). The box around text (control height, padding) is on the grid.
+- Fluid widths in `%`, `fr`, `ch`.
 
-## Radii
-| token | px | use |
-|---|---|---|
-| `--rd-line` | 2 | meters, link button focus |
-| `--rd-1` | 6 | small controls, badges, kbd, focus ring |
-| `--rd-2` | 10 | controls: buttons, inputs, segments, list rows, menu items |
-| `--rd-3` | 14 | cards, menus |
-| `--rd-4` | 18 | large media inside an island |
-| `--rd-island` | 24 | islands, modals |
-| `--rd-full` | 999 | chips, avatars, pills |
+### Breakpoints
+Two, both on the grid: **900** and **1440**. Use only these for any responsive change.
 
-The bigger the container, the bigger the radius. A child never has a larger radius than its parent.
+## CSS
+```css
+:root {
+  /* grid: 4 px step; step 2 below 16, step 8 from 48, step 16+ from 64 */
+  --space-2: 2px;   --space-4: 4px;   --space-6: 6px;   --space-8: 8px;
+  --space-10: 10px; --space-12: 12px; --space-14: 14px; --space-16: 16px;
+  --space-20: 20px; --space-24: 24px; --space-28: 28px; --space-32: 32px;
+  --space-36: 36px; --space-40: 40px; --space-44: 44px; --space-48: 48px;
+  --space-56: 56px; --space-64: 64px;
+  --space-80: 80px; --space-96: 96px; --space-128: 128px;
+}
+```
 
-## Breakpoints
-| range | `--island-pad` |
-|---|---|
-| below 900 px | 16 |
-| 900 to 1439 px | 20 |
-| 1440 px and up | 24 |
+The name is the value in pixels, so the scale reads at a glance and a missing name means a missing step.
 
-Use these two breakpoints (900, 1440) for any other responsive change too. Do not introduce new ones.
+## Practice
+Spacing in component CSS uses `--space-*` directly. Sizes with a role (control heights, radii, island padding) come from [tokens.md](tokens.md), which are built on this scale.
 
-## Columns
-`.grid-2` and `.grid-3` split space into equal columns with the 8 px gutter, the same as the gap between islands. Use them for side by side islands or cards.
+```css
+/* right */
+.toolbar { display: flex; gap: var(--space-8); padding: var(--space-12) var(--space-16); }
+.empty { padding: var(--space-64) var(--space-24); }
+
+/* wrong: off the grid, raw px */
+.toolbar { gap: 7px; padding: 13px 18px; }
+.empty { padding: 60px 25px; }
+```
+
+```html
+<section class="island island-pad stack-3">
+  <h2 class="t-label" style="margin-top: var(--space-16)">Account</h2>
+  <div class="cluster">…buttons, gap 8…</div>
+</section>
+```

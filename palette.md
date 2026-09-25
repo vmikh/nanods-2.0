@@ -1,88 +1,90 @@
 # Palette
 
-Dark only. Hierarchy comes from surface tone, not from borders or shadows. One accent: lime.
+The first level for colour. The system is **monochrome**: one scale from white to black and nothing else. Both themes, dark and light, are built from this one scale. The palette says nothing about purpose. Roles (text, background, the main action) are assigned in [tokens.md](tokens.md), and components use only those tokens, never the palette directly.
 
-## Surfaces, darkest to lightest
-| token | value | use |
-|---|---|---|
-| `--c-bg-deep` | #06070A | video wells, the deepest wells |
-| `--c-bg` | #0A0B0E | page canvas, the gaps between islands |
-| `--c-island` | #171A21 | islands, modals |
-| `--c-hover` | #181B22 | ghost hover on an island (list rows) |
-| `--c-surface` | #1F232C | menus, popovers |
-| `--c-surface-2` | #232830 | cards on islands, secondary buttons, inputs, selects, chips, badges, kbd, selected list row, meter track |
-| `--c-surface-3` | #2A2F39 | hover of anything on `--c-surface-2` |
-| `--c-line` | #1A1E26 | 1 px hairline dividers |
-| `--c-line-2` | #3A404C | dashed drop zones, the only stronger outline |
+## Theory
 
-### Layering
-```
---c-bg        canvas
-└ --c-island   island or modal
-  ├ --c-surface-2   card, button, input, chip (hover: --c-surface-3)
-  └ --c-surface     menu or popover, with --shadow-pop
-    └ --c-surface-2   hovered menu item
-```
-- Each layer is one step lighter than the one it sits on. Never place a surface on a lighter surface.
-- A card is `--c-surface-2`, the same tone as inputs and buttons. So a card holds content (text, meters, lists), not form controls: put forms straight on the island with `.field` rows.
-- Ghost elements (list rows, ghost segments) are transparent at rest and turn `--c-hover` on hover, `--c-surface-2` when selected.
+### One scale
+There are no hues: no brand colour, no green for success, no red for errors. Everything is built from lightness alone. This keeps the interface calm and lets the few high contrast elements do all the pointing.
 
-## Text
-| token | value | use |
-|---|---|---|
-| `--c-fg` | #F2F4F7 | primary text, headings, active items |
-| `--c-fg-2` | #A0A7B4 | secondary text, descriptions, resting list rows and menu items, unselected segments |
-| `--c-fg-3` | #8A92A0 | icons at rest, badge text, kbd |
-| `--c-fg-4` | #6B7280 | muted: meta, captions, section labels, hints, card subtitles |
-| `--c-fg-5` | #4B515C | disabled text |
-| `--c-on-light` | #0A0B0E | text on `--c-accent` and `--c-light` fills |
+### Naming
+`--gray-{step}`, from **0 (white) to 1000 (black)**. The number is lightness, not importance.
 
-Placeholders are `rgba(160, 167, 180, .42)`.
+### Fine steps at both ends
+Surfaces differ by a few units: on the dark theme near black, on the light theme near white. So both ends of the scale are dense (0, 25, 50, 75 and 850, 900, 925, 950). The middle has fewer steps: text there needs contrast, not nuance.
 
-- Two or three text levels per block, not all five. Title `--c-fg`, body `--c-fg-2`, meta `--c-fg-4` is the usual set.
-- Hover and selection raise text one level: `--c-fg-2` becomes `--c-fg`.
-- Never put `--c-fg-4` or `--c-fg-5` text on `--c-surface-3`: too little contrast.
+### Emphasis without colour
+Without hues, the job of an accent goes to **contrast**:
+- The element with the highest contrast against the page is the most important: the primary button is a near white fill in the dark theme and a near black fill in the light theme.
+- Selection is the same inverted fill (a selected segment, a selected chip).
+- Links are text of the primary tone with an underline.
+- Status is carried by words and icon shapes, never by tint.
 
-## Accent
-| token | value | use |
-|---|---|---|
-| `--c-accent` | #D2FF3A | primary button, links, focus ring, meter fill, checkbox and range, `.badge-accent` |
-| `--c-accent-hover` | #E4FF7A | hover of the above |
-| `--c-accent-soft` | lime at 14 % | `.chip-accent` background, disabled primary button |
+### Rules
+- Opaque only. Transparency is made in tokens with `color-mix()`.
+- Never add a hue, not even for one element. If something needs to stand out, give it more contrast, weight or size.
+- Never use a palette variable in component CSS. If a role is missing, add a token.
 
-- One accent, used for pointing. It marks the main action and interactive text, nothing else.
-- One `.btn-primary` per view, per modal, per form.
-- No accent backgrounds on islands, cards or sections. No accent headings. No accent icons for decoration.
-- Text on a lime fill is always `--c-on-light`.
+## Scale
+| token | hex | dark theme role | light theme role |
+|---|---|---|---|
+| `--gray-0` | #FFFFFF | hover of the accent fill | islands, menus |
+| `--gray-25` | #F8F9FB | | ghost hover |
+| `--gray-50` | #F2F4F7 | primary text, accent fill, focus ring | level 2 background |
+| `--gray-75` | #EBEEF2 | | canvas, level 3 background |
+| `--gray-100` | #E2E5EA | | divider |
+| `--gray-200` | #C3C8D0 | | strong line |
+| `--gray-300` | #A0A7B4 | secondary text | disabled, link underline |
+| `--gray-400` | #8A92A0 | tertiary text, icons at rest, neutral fills | muted icons, input focus, neutral fills |
+| `--gray-500` | #6B7280 | muted text | tertiary and muted text, icons at rest |
+| `--gray-600` | #4B515C | disabled | secondary text |
+| `--gray-700` | #3A404C | strong line, link underline | link hover |
+| `--gray-750` | #2A2F39 | level 3 background | |
+| `--gray-800` | #232830 | level 2 background | |
+| `--gray-850` | #1F232C | floating background | |
+| `--gray-900` | #1A1E26 | divider, ghost hover | accent fill, selection |
+| `--gray-925` | #171A21 | level 1 background (islands) | |
+| `--gray-950` | #0A0B0E | canvas | primary text, focus ring |
+| `--gray-1000` | #06070A | wells, shadows | wells, hover of the accent fill |
 
-## Light (inverted) fill
-`--c-light` #F2F4F7 with `--c-on-light` text marks **selection** in a group: the selected segment in `.seg`, the selected `.chip.on`. It is not a button style. Hover: `--c-light-hover` #FFFFFF.
-
-## Status
-| token | value | use |
-|---|---|---|
-| `--c-ok` | #4CC9A4 | success: `.badge-ok`, `.meter-ok`, `.c-ok` text |
-| `--c-warn` | #D9B04A | warning text `.c-warn` |
-| `--c-danger` | #FF8A9B | destructive or error: `.badge-danger`, `.c-danger` text |
-
-- Status colours go on text, small badges and meter fills. Never as large backgrounds.
-- Status is never shown by colour alone: pair it with a word or an icon.
-- Destructive buttons stay `.btn` (secondary) with `--c-danger` text; the confirmation is a modal.
-
-## Glass and overlay
-| token | value | use |
-|---|---|---|
-| `--c-scrim` | rgba(10, 11, 14, .84) | modal scrim, with `backdrop-filter: blur(4px)` |
-| `--c-scrim-strong` | rgba(6, 7, 10, .6) | overlays over media |
-| `--c-glass` / `--c-glass-hover` | light at 22 % / 16 % | controls floating over media |
-| `--c-glass-dark` | dark at 55 % | captions and chips over media |
-| `--shadow-pop` | 0 12px 32px rgba(0,0,0,.4) | menus and popovers only |
-| `--blur` | blur(14px) | backdrop of glass controls |
-
-Glass is only for things floating over images and video. On islands, use solid surfaces.
-
-## Utility classes
+## CSS
 ```css
-.c-fg { color: var(--c-fg); } .c-fg-2 { color: var(--c-fg-2); } .c-fg-3 { color: var(--c-fg-3); } .c-fg-4 { color: var(--c-fg-4); }
-.c-accent { color: var(--c-accent); } .c-danger { color: var(--c-danger); } .c-ok { color: var(--c-ok); } .c-warn { color: var(--c-warn); }
+:root {
+  /* one scale: 0 white → 1000 black; fine steps at both ends */
+  --gray-0: #FFFFFF;    --gray-25: #F8F9FB;   --gray-50: #F2F4F7;   --gray-75: #EBEEF2;
+  --gray-100: #E2E5EA;  --gray-200: #C3C8D0;
+  --gray-300: #A0A7B4;  --gray-400: #8A92A0;  --gray-500: #6B7280;  --gray-600: #4B515C;
+  --gray-700: #3A404C;  --gray-750: #2A2F39;  --gray-800: #232830;  --gray-850: #1F232C;
+  --gray-900: #1A1E26;  --gray-925: #171A21;  --gray-950: #0A0B0E;  --gray-1000: #06070A;
+}
+```
+
+## Practice
+Palette variables appear in exactly one place: the token blocks in [tokens.md](tokens.md). Even charts use tokens, so they follow the theme; they separate series by contrast level, line style and direct labels, never by hue.
+
+```css
+/* right */
+.btn { background: var(--bg-2); }
+.chart-series-1 { stroke: var(--text-primary); }
+.chart-series-2 { stroke: var(--text-muted); stroke-dasharray: 4 4; }
+
+/* wrong: palette in a component, raw hex, any hue */
+.btn { background: var(--gray-800); }
+.btn { background: #232830; }
+.status-ok { color: #4CC9A4; }
+```
+
+A swatch strip for checking the scale in a browser:
+```html
+<div style="display: grid; grid-template-columns: repeat(18, 1fr); height: 48px; border-radius: var(--radius-md); overflow: hidden">
+  <div style="background: var(--gray-0)"></div><div style="background: var(--gray-25)"></div>
+  <div style="background: var(--gray-50)"></div><div style="background: var(--gray-75)"></div>
+  <div style="background: var(--gray-100)"></div><div style="background: var(--gray-200)"></div>
+  <div style="background: var(--gray-300)"></div><div style="background: var(--gray-400)"></div>
+  <div style="background: var(--gray-500)"></div><div style="background: var(--gray-600)"></div>
+  <div style="background: var(--gray-700)"></div><div style="background: var(--gray-750)"></div>
+  <div style="background: var(--gray-800)"></div><div style="background: var(--gray-850)"></div>
+  <div style="background: var(--gray-900)"></div><div style="background: var(--gray-925)"></div>
+  <div style="background: var(--gray-950)"></div><div style="background: var(--gray-1000)"></div>
+</div>
 ```

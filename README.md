@@ -1,41 +1,57 @@
 # nanods 2.0
 
-A design system written as documentation for AI. Give these files to a model before it builds any interface; they are the source of truth. Every value is in [tokens.md](tokens.md), every rule is in the file for its topic.
+A design system written as documentation for AI. Give these files to a model before it builds any interface; they are the source of truth.
 
-The look: a dark canvas, content in rounded **islands**, no outlines, hierarchy by surface tone, one lime accent, Onest typeface, 4 px grid, 14 px UI text.
+The look: a canvas with content in rounded **islands**, dark and light themes, no outlines, hierarchy by surface tone, monochrome: one grey scale from white to black, no hues, the system font (SF Pro), 4 px grid, 14 px UI text.
+
+## How it is built
+Every file explains the theory first, then gives the CSS and HTML. Values flow in three levels:
+
+```
+grid.md + palette.md     raw values     --space-12, --gray-800, --gray-50
+        ↓
+tokens.md                roles          --radius-md, --bg-2, --text-secondary
+        ↓
+components.md            UI             .btn { background: var(--bg-2); }
+```
+
+Components use tokens and `--space-*` only. Never the palette, never a raw hex or px.
 
 ## Files
-Read them in this order.
+Read them in this order. To assemble the stylesheet, copy the CSS blocks in the same order.
 
 | file | what it covers |
 |---|---|
-| [tokens.md](tokens.md) | the complete `:root` block and base layer. Paste it first, use only these variables |
-| [palette.md](palette.md) | colour roles, surface layering, accent and status rules |
-| [typography.md](typography.md) | Onest, type scale, text classes, weights |
-| [grid.md](grid.md) | 4 px grid, spacing scale, fixed sizes, breakpoints |
-| [layout.md](layout.md) | shell, islands, cards, flow utilities, page recipes |
-| [components.md](components.md) | button, segmented, inputs, field, chip, badge, kbd, list, menu, modal, meter |
+| [grid.md](grid.md) | 4 px step, how the scale grows, `--space-*` |
+| [palette.md](palette.md) | one grey scale from white to black, `--gray-0` … `--gray-1000` |
+| [tokens.md](tokens.md) | roles: radius, size, background levels, text, icon, line, effects; dark and light values |
+| [themes.md](themes.md) | dark and light themes: how they differ, switching, rules |
+| [typography.md](typography.md) | system font stack (SF Pro), type scale, text classes |
 | [motion.md](motion.md) | states (hover, press, focus, selected, disabled) and timing |
-| [icons.md](icons.md) | Phosphor Fill, sizes, colour |
+| [icons.md](icons.md) | Phosphor, Fill weight, sizes, colour |
+| [layout.md](layout.md) | page base, shell, islands, cards, flow utilities, recipes |
+| [components.md](components.md) | button, segmented, inputs, field, chip, badge, kbd, list, menu, modal, meter |
 | [text.md](text.md) | editorial policy: case, dashes, non-breaking spaces |
 
 ## Core principles
-1. **Canvas and islands.** The page background is `--c-bg`. All content lives in islands (`--c-island`, radius 24) separated by 8 px gutters. Nothing sits directly on the canvas.
-2. **Surfaces, not borders.** Never outline a card, input or button. Hierarchy comes from surface tone: canvas, island, surface, surface-2. The only lines allowed are 1 px `--c-line` dividers and the focus ring.
-3. **One accent.** Lime `--c-accent` points at the main thing: the primary button, links, focus, progress. One primary button per view or modal. Never use the accent for decoration, backgrounds or large fills.
-4. **Tokens only.** No raw hex, px or ms in component code. If a value is missing from [tokens.md](tokens.md), the design is wrong, not the token list.
-5. **4 px grid.** Every spacing and size is a multiple of 4, halves (2, 6, 10, 14) only for tight insides of controls.
-6. **Quiet type.** Onest at 500 by default, 600 for headings and emphasis. 14 px is the UI size; 15 to 16 px only for reading text.
-7. **No uppercase, no long dashes.** Sentence case everywhere. See [text.md](text.md).
-8. **Flat.** No shadows except on popovers (`--shadow-pop`), no gradients except the scroll fade on islands.
+1. **Canvas and islands.** The page is `--bg-0`. All content lives in islands (`--bg-1`, radius 24) separated by 8 px gutters.
+2. **Surfaces, not borders.** Hierarchy comes from background levels: `--bg-0`, `--bg-1`, `--bg-2`, `--bg-3`. The only lines are 1 px dividers and the focus ring.
+3. **Monochrome.** No hues at all. The highest contrast tone does the pointing: the primary button is an inverted fill, focus is a ring of the primary tone, links are underlined. One primary button per view or modal. Status is words and icon shapes, never colour.
+4. **Three levels.** Grid and palette hold raw values, tokens give them roles, components use tokens.
+5. **Two themes, one structure.** Dark by default, light on request or by system setting. Only colour tokens change; components never know which theme is on.
+6. **Everything on the grid.** Every size is a step of 4 px, halves only below 16.
+7. **Quiet type.** System font (SF Pro), 500 by default, 600 for headings and emphasis. 14 px for the interface, 15 to 16 for reading.
+8. **No uppercase, no long dashes.** Sentence case everywhere. See [text.md](text.md).
+9. **Flat.** No shadows except on menus and popovers, no gradients except the island scroll fade.
 
 ## Checklist before you ship
-- [ ] Page background is `--c-bg`, content is inside `.island` blocks, gutters are 8 px.
-- [ ] No `border` on anything except `.divider` / `.menu-sep`. No outlines except `:focus-visible`.
-- [ ] At most one `.btn-primary` per view. Accent appears only on primary actions, links, focus, progress, selected accents.
-- [ ] Every colour, size, radius and duration is a `var(--…)` from [tokens.md](tokens.md).
-- [ ] All spacing is on the 4 px grid; controls are 28, 36 or 40 px high; rows are 44.
-- [ ] Font is Onest, weight 500 or 600 (700 only for rare display numbers). No weight 400.
-- [ ] No uppercase text, no `text-transform`, no em dashes in copy, non-breaking spaces after Russian prepositions.
-- [ ] Icons are Phosphor, Fill weight only, 16 px in controls, 14 px in meta, `currentColor`.
-- [ ] Hover is one tone lighter, press is `scale(.97)`, focus is the lime ring.
+- [ ] Page is `--bg-0`, content is inside `.island` blocks, gutters are 8 px.
+- [ ] No `border` except `.divider` and `.menu-sep`. No outlines except `:focus-visible`.
+- [ ] No hue anywhere: every colour comes from the grey scale through tokens. At most one `.btn-primary` per view.
+- [ ] Component CSS references tokens and `--space-*` only: no `--gray-*`, no hex, no raw px.
+- [ ] Every size is on the 4 px grid; controls are 28, 36 or 40 high; rows are 44.
+- [ ] Font is `var(--font)` (the system stack, no web fonts), weight 500 or 600. No weight 400.
+- [ ] No uppercase, no `text-transform`, no em dashes in copy, non-breaking spaces after Russian prepositions.
+- [ ] Icons are Phosphor Fill, 16 in controls, 14 in meta, `currentColor`.
+- [ ] Checked in both themes; no theme specific overrides in component CSS.
+- [ ] Hover is one tone step, press is `scale(.97)`, focus is the ring.
