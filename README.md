@@ -45,6 +45,11 @@ or `@import "nanods/nanods.css"` from a bundler (fonts resolve relative to `css/
 ## Icons
 The system ships no icons. Use **Lucide** (`lucide.dev`, ISC): 24 px grid, 1.5–2 px stroke, `currentColor`; render at 16 px inside controls and 14 px in meta text, coloured `--c-fg-3` at rest and inheriting on hover.
 
+## Text rules
+- No uppercase unless it is genuinely needed. Section labels in the UI are the one allowed place (`.t-label`); headings, buttons and body text stay in sentence case.
+- No long dashes in copy. Use a comma, a colon or a new sentence instead; a short hyphen only inside words.
+- In Russian, a non-breaking space between a preposition and the word after it (`в проекте`, `на странице`, `с нуля`), so a preposition never ends a line.
+
 ## Rules of thumb
 - Surfaces, not borders. Islands on the canvas, `--c-surface-2` controls on islands, `--c-surface` popovers above.
 - Press feedback is `transform: scale(.97)`; hover is one tone lighter.
