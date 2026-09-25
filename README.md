@@ -11,7 +11,7 @@ or `@import "nanods/nanods.css"` from a bundler (fonts resolve relative to `css/
 - `css/tokens.css` — spacing `--mp-*` (4 px grid), radii `--rd-*` (island = 24 px), motion `--dur-*` / `--ease`, palette `--c-*`, type scale `--fs-*`, control heights, `--island-pad`.
 - `css/fonts.css` + `fonts/` — Onest variable 500–700, split by script.
 - `css/base.css` — reset, body, focus ring, typography classes `.t-h1 … .t-label`, colour utilities.
-- `css/layout.css` — `.shell` (islands with 8 px gutters), `.island` + `.island-pad`, `.card`, `.stack` / `.cluster` / `.row` / `.grid-*`.
+- `css/layout.css` — `.shell` (islands with 8 px gutters), `.island` + `.island-pad`, `.card` (+ `.card-head > .card-title / .card-sub`), `.stack` / `.cluster` / `.row` / `.grid-*`.
 - `css/components.css` — Button, Segmented, Input / Select / Textarea / Field / Check, Chip / Badge / Kbd, List row, Menu, Scrim + Modal, Meter.
 - `demo/index.html` — everything on one page. `scripts/shot.mjs` screenshots a URL with headless Chrome.
 
