@@ -30,7 +30,7 @@ Read them in this order. To assemble the stylesheet, copy the CSS blocks in the 
 | [motion.md](motion.md) | states (hover, press, focus, selected, disabled) and timing |
 | [icons.md](icons.md) | Phosphor, Fill weight, sizes, colour |
 | [layout.md](layout.md) | page base, shell, islands, cards, flow utilities, recipes |
-| [components.md](components.md) | button, segmented, inputs, field, chip, badge, kbd, list, menu, modal, meter |
+| [components.md](components.md) | button, segmented, inputs, field, chip, badge, kbd, list, menu, modal, meter, audio player |
 | [text.md](text.md) | editorial policy: case, dashes, non-breaking spaces |
 
 ## Core principles
@@ -42,7 +42,7 @@ Read them in this order. To assemble the stylesheet, copy the CSS blocks in the 
 6. **Everything on the grid.** Every size is a step of 4 px, halves only below 16.
 7. **Quiet type.** System font (SF Pro), 500 by default, 600 for headings and emphasis. 14 px for the interface, 15 to 16 for reading.
 8. **No uppercase, no long dashes.** Sentence case everywhere. See [text.md](text.md).
-9. **Flat.** No shadows except on menus and popovers, no gradients except the island scroll fade.
+9. **Flat.** No shadows except on menus, popovers and floating players, no gradients except the island scroll fade.
 
 ## Checklist before you ship
 - [ ] Page is `--bg-0`, content is inside `.island` blocks, gutters are 8 px.

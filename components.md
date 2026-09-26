@@ -13,6 +13,7 @@ Borderless: hierarchy comes from surface tone, not outlines. Each component belo
 | Menu | `.menu > .menu-head / .menu-item / .menu-sep` |
 | Modal | `.scrim > .modal > .modal-head` |
 | Meter | `.meter > i` (`.meter-neutral`) |
+| Audio player | `.player` (`.player-float`) · `.player-time` · `.player-rate` · `.player-error` |
 
 Do not invent components that are not here. Compose from these, the [layout](layout.md) classes and the [text classes](typography.md).
 
@@ -248,4 +249,63 @@ Progress or a share of a whole.
 
 ```html
 <div class="row"><div class="meter grow"><i style="width: 62%"></i></div><span class="t-meta t-num">62%</span></div>
+```
+
+## Audio player
+One row for a single recording: play, seek, time, speed. Built from `.btn-icon`, `.range` and `.select-sm`.
+
+- The row holds exactly four things in this order: play, seek, time, speed. A title or a chapter picker, if needed, goes above it as one `.t-meta` line.
+- Play is `.btn.btn-icon` with the Phosphor `play` or `pause` fill icon. Its `aria-label` names the action: "Play", "Pause".
+- Seek is the native `.range`. It grows to fill the row and stays disabled until the duration is known.
+- Time is `m:ss / m:ss` in `--text-secondary`, tabular.
+- Speed is a `.select-sm` with 0.75×, 1×, 1.25×, 1.5× and 2×. Keep the pitch (`preservesPitch`).
+- Use `preload="metadata"`: the duration shows at once, the file downloads only on play.
+- One recording per language. Switching the language loads the other one and starts it from the beginning.
+- An error is one short sentence in a small popover above the row, in `--text-primary`, with a `warning-circle` icon. Play retries. No red.
+- `.player-float` is the floating version over a canvas or media: `--bg-1`, radius 14, 44 high. Like a menu, it is allowed a shadow. Set its width inline, 360 to 400.
+- Speech needs little: encode mono MP3 or AAC at 64 kbps.
+
+```css
+.player { position: relative; display: flex; align-items: center; gap: var(--space-8); min-width: 0; }
+.player > .range { flex: 1; min-width: var(--space-64); margin: 0 var(--space-4); }
+.player-time { flex: none; font-size: var(--fs-meta); color: var(--text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.player-rate { flex: none; width: var(--space-80); font-variant-numeric: tabular-nums; }
+.player-float { min-height: var(--size-row); padding: var(--space-4) var(--space-12) var(--space-4) var(--space-4); background: var(--bg-1); border-radius: var(--radius-lg); box-shadow: var(--shadow-float); }
+.player-error { position: absolute; right: 0; bottom: calc(100% + var(--space-8)); display: flex; align-items: center; gap: var(--space-6); padding: var(--space-8) var(--space-12); border-radius: var(--radius-md); background: var(--bg-float); box-shadow: var(--shadow-float); color: var(--text-primary); font-size: var(--fs-sm); white-space: nowrap; }
+```
+
+```html
+<section class="player player-float" aria-label="Podcast" style="width: 380px">
+  <audio preload="metadata" src="/audio/podcast-en.mp3"></audio>
+  <button class="btn btn-icon" aria-label="Play"><i class="icon ph-fill ph-play" aria-hidden="true"></i></button>
+  <input type="range" class="range" min="0" max="1" step="0.1" value="0" aria-label="Playback position" disabled>
+  <span class="player-time">0:00 / 0:00</span>
+  <select class="select select-sm player-rate" aria-label="Playback speed">
+    <option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option>
+  </select>
+  <p class="player-error" role="status" hidden><i class="icon icon-sm ph-fill ph-warning-circle" aria-hidden="true"></i>Playback unavailable. Press play to retry.</p>
+</section>
+```
+
+```js
+const player = document.querySelector('.player'), audio = player.querySelector('audio');
+const play = player.querySelector('.btn-icon'), icon = play.querySelector('.icon'), seek = player.querySelector('.range');
+const time = player.querySelector('.player-time'), rate = player.querySelector('.player-rate'), error = player.querySelector('.player-error');
+const clock = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+const show = () => { time.textContent = `${clock(audio.currentTime)} / ${clock(audio.duration || 0)}`; seek.value = audio.currentTime; };
+play.onclick = async () => {
+  if (!audio.paused) return audio.pause();
+  if (!error.hidden) audio.load();
+  audio.playbackRate = Number(rate.value); audio.preservesPitch = true; error.hidden = true;
+  try { await audio.play(); } catch { error.hidden = false; }
+};
+audio.onplay = audio.onpause = () => {
+  const on = !audio.paused;
+  icon.classList.toggle('ph-play', !on); icon.classList.toggle('ph-pause', on); play.setAttribute('aria-label', on ? 'Pause' : 'Play');
+};
+audio.onloadedmetadata = () => { seek.max = audio.duration; seek.disabled = false; show(); };
+audio.ontimeupdate = show;
+audio.onerror = () => { error.hidden = false; };
+seek.oninput = () => { audio.currentTime = Number(seek.value); show(); };
+rate.onchange = () => { audio.playbackRate = Number(rate.value); };
 ```
